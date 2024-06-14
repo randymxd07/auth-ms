@@ -1,12 +1,13 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { JwtPayload, LoginUserResponse, RegisterUserResponse } from './interfaces';
-import { LoginUserDto, RegisterUserDto, VerifyUserDto } from './dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { User } from './entities/user.entity';
-import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt';
 import { envs } from 'src/config';
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
+import { JwtService } from '@nestjs/jwt';
+import { LoginUserDto, RegisterUserDto } from './dto';
+import { Model } from 'mongoose';
+import { RpcException } from '@nestjs/microservices';
+import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,12 @@ export class AuthService {
         @InjectModel(User.name) private readonly usersRepository: Model<User>,
     ) { }
 
-    async signJWT(payload: JwtPayload) {
+    /**==============================
+     * SIGN JWT FUNCTION
+     * @param {JwtPayload} payload 
+     * @returns {Promise<string>}
+    =================================*/
+    async signJWT(payload: JwtPayload): Promise<string> {
         return this.jwtService.sign(payload);
     }
 
@@ -36,7 +42,7 @@ export class AuthService {
             const user = await this.usersRepository.findOne({email});
 
             if (user) {
-                throw new BadRequestException({
+                throw new RpcException({
                     status: 400,
                     message: 'User already exists'
                 });
@@ -61,7 +67,10 @@ export class AuthService {
 
             this.logger.error(error);
 
-            throw new BadRequestException(error.message, error.detail);
+            throw new RpcException({
+                status: 400,
+                message: error.message
+            });
 
         }
 
@@ -81,7 +90,7 @@ export class AuthService {
             const user = await this.usersRepository.findOne({email});
 
             if (!user) {
-                throw new BadRequestException({
+                throw new RpcException({
                     status: 400,
                     message: 'User/Password not valid'
                 });
@@ -90,7 +99,7 @@ export class AuthService {
             const isPasswordValid = bcrypt.compareSync(password, user.password);
 
             if (!isPasswordValid) {
-                throw new BadRequestException({
+                throw new RpcException({
                     status: 400,
                     message: 'User/Password not valid'
                 })
@@ -110,13 +119,21 @@ export class AuthService {
 
             this.logger.error(error);
 
-            throw new BadRequestException(error.message, error.detail);
+            throw new RpcException({
+                status: 400,
+                message: error.message
+            });
 
         }
 
     }
 
-    async verifyUser(token: string) {
+    /**=========================================
+     * VERIFY USER FUNCTION
+     * @param {string} token 
+     * @returns {Promise<VerifyUserResponse>}
+    ============================================*/
+    async verifyUser(token: string): Promise<VerifyUserResponse> {
 
         try {
 
@@ -133,7 +150,10 @@ export class AuthService {
 
             this.logger.error(error);
 
-            throw new BadRequestException(error.message, error.detail);
+            throw new RpcException({
+                status: 400,
+                message: error.message
+            });
 
         }
 
