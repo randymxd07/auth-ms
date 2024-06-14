@@ -19,7 +19,7 @@ export class AuthController {
 
   @Get('verify-user')
   verifyUser(@Body() token: string) {
-    return this.authService.verifyToken(token)
+    return this.authService.verifyToken(token);
   }
 
 }
