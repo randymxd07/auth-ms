@@ -18,7 +18,7 @@ export class AuthService {
 
         try {
 
-            // TODO: REGISTRAR UN USUARIO //
+            return registerUserDto;
 
         } catch (error) {
 
@@ -34,7 +34,7 @@ export class AuthService {
 
         try {
 
-            // TODO: LOGGEAR UN USUARIO //
+            return loginUserDto;
 
         } catch (error) {
 
@@ -50,7 +50,7 @@ export class AuthService {
 
         try {
 
-            // TODO: VERIFICAR EL TOKEN //
+            return token;
 
         } catch (error) {
 
