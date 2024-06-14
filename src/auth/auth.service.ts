@@ -1,11 +1,12 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload, LoginUserResponse, RegisterUserResponse } from './interfaces';
-import { LoginUserDto, RegisterUserDto } from './dto';
+import { LoginUserDto, RegisterUserDto, VerifyUserDto } from './dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { envs } from 'src/config';
 
 @Injectable()
 export class AuthService {
@@ -115,11 +116,18 @@ export class AuthService {
 
     }
 
-    async verifyToken(token: string) {
+    async verifyUser(token: string) {
 
         try {
 
-            return token;
+            const { sub, iat, exp, ...data } = this.jwtService.verify(token, {
+                secret: envs.jwtSecret,
+            });
+
+            return {
+                user: data,
+                token: await this.signJWT(data)
+            }
 
         } catch (error) {
 
