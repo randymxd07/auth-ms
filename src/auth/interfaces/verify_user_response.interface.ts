@@ -3,7 +3,7 @@ export interface VerifyUserResponse {
     token: string;
 }
 
-export interface User {
+interface User {
     id:       string;
     email:    string;
     username: string;
