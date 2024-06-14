@@ -3,6 +3,7 @@ import { Types } from "mongoose";
 export interface RegisterUserResponse {
     data: Data;
     token: string;
+    message: string;
 }
 
 export interface Data {

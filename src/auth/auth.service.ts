@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload, RegisterUserResponse } from './interfaces';
+import { JwtPayload, LoginUserResponse, RegisterUserResponse } from './interfaces';
 import { LoginUserDto, RegisterUserDto } from './dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
@@ -53,6 +53,7 @@ export class AuthService {
                     email: newUser.email,
                     username: newUser.username
                 }),
+                message: 'The user was created successfully',
             }
 
         } catch (error) {
@@ -65,11 +66,44 @@ export class AuthService {
 
     }
 
-    async loginUser(loginUserDto: LoginUserDto) {
+    /**========================================
+     * LOGIN USER FUNCTION
+     * @param {LoginUserDto} loginUserDto
+     * @returns {Promise<LoginUserResponse>}
+    ===========================================*/
+    async loginUser(loginUserDto: LoginUserDto): Promise<LoginUserResponse> {
 
         try {
 
-            return loginUserDto;
+            const { email, password } = loginUserDto;
+
+            const user = await this.usersRepository.findOne({email});
+
+            if (!user) {
+                throw new BadRequestException({
+                    status: 400,
+                    message: 'User/Password not valid'
+                });
+            }
+
+            const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+            if (!isPasswordValid) {
+                throw new BadRequestException({
+                    status: 400,
+                    message: 'User/Password not valid'
+                })
+            }
+
+            return {
+                user: user.toObject(),
+                token: await this.signJWT({
+                    id: String(user._id),
+                    email: user.email,
+                    username: user.username
+                }),
+                message: 'The user logged in correctly'
+            }
 
         } catch (error) {
 
