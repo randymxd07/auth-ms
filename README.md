@@ -26,13 +26,23 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-$ pnpm install
+git clone https://github.com/randymxd06/client-gateway.git
 ```
 
-## Running the app
+### 2. Install the dependencies
+
+```bash
+pnpm install
+```
+
+### 3. Copy the `.env.template` file and rename it to `.env` then put the port, database_url and jwt_secret
+
+### 4. Running the app
 
 ```bash
 # development
