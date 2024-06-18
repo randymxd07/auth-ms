@@ -39,7 +39,7 @@ export class AuthService {
 
             const { email, password } = registerUserDto;
 
-            const user = await this.usersRepository.findOne({email});
+            const user = await this.usersRepository.findOne({ email });
 
             if (user) {
                 throw new RpcException({
@@ -87,7 +87,7 @@ export class AuthService {
 
             const { email, password } = loginUserDto;
 
-            const user = await this.usersRepository.findOne({email});
+            const user = await this.usersRepository.findOne({ email });
 
             if (!user) {
                 throw new RpcException({
@@ -160,12 +160,29 @@ export class AuthService {
     }
 
     async changePassword(changePasswordDto: ChangePasswordDto) {
-        
+
         try {
 
-            // TODO: CAMBIAR LA CONTRASEÑA //
+            /**====================================================================
+             * TODO: COMPARAR CONTRASEÑAS Y SI COINCIDEN CAMBIARLA POR LA NUEVA.
+             * TODO: RETORNAR UN MENSAJE AL CLIENTE.
+            =======================================================================*/
 
-            
+            const { token, password } = changePasswordDto;
+            const decoded = this.jwtService.verify(token);
+
+            const user = await this.usersRepository.findOne({ username: decoded.username });
+
+            const isPasswordValid = bcrypt.compareSync(password, user.password);
+
+            if (!isPasswordValid) {
+                throw new RpcException({
+                    status: 400,
+                    message: 'Password not valid'
+                })
+            }
+
+            return user;
 
         } catch (error) {
 
@@ -177,7 +194,7 @@ export class AuthService {
             });
 
         }
-        
+
     }
 
 }

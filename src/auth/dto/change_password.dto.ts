@@ -3,6 +3,10 @@ import { Match } from "src/common";
 
 export class ChangePasswordDto {
 
+    @IsNotEmpty()
+    @IsString()
+    token: string;
+
     @IsString()
     @IsNotEmpty()
     password: string;
