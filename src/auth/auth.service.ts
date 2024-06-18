@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto, RegisterUserDto } from './dto';
+import { ChangePasswordDto, LoginUserDto, RegisterUserDto } from './dto';
 import { Model } from 'mongoose';
 import { RpcException } from '@nestjs/microservices';
 import { User } from './entities/user.entity';
@@ -157,6 +157,27 @@ export class AuthService {
 
         }
 
+    }
+
+    async changePassword(changePasswordDto: ChangePasswordDto) {
+        
+        try {
+
+            // TODO: CAMBIAR LA CONTRASEÑA //
+
+            
+
+        } catch (error) {
+
+            this.logger.error(error);
+
+            throw new RpcException({
+                status: 400,
+                message: error.message
+            });
+
+        }
+        
     }
 
 }
