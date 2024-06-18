@@ -1,7 +1,7 @@
 import { envs } from 'src/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
+import { ChangePasswordResponse, JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto, LoginUserDto, RegisterUserDto } from './dto';
 import { Model } from 'mongoose';
@@ -160,7 +160,12 @@ export class AuthService {
 
     }
 
-    async changePassword(changePasswordDto: ChangePasswordDto) {
+    /**===============================================
+     * CHANGE PASSWORD FUNCTION
+     * @param {ChangePasswordDto} changePasswordDto 
+     * @returns {Promise<ChangePasswordResponse>}
+    ==================================================*/
+    async changePassword(changePasswordDto: ChangePasswordDto): Promise<ChangePasswordResponse> {
 
         try {
 
