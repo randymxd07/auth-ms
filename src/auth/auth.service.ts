@@ -3,7 +3,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ChangePasswordResponse, JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { ChangePasswordDto, LoginUserDto, RegisterUserDto } from './dto';
+import { ChangePasswordDto, LoginUserDto, RegisterUserDto, UpdateUserDto } from './dto';
 import { Model } from 'mongoose';
 import { RpcException } from '@nestjs/microservices';
 import { User } from './entities/user.entity';
@@ -210,6 +210,10 @@ export class AuthService {
 
         }
 
+    }
+
+    updateUser(updateUserDto: UpdateUserDto) {
+        return updateUserDto;
     }
 
 }

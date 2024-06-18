@@ -1,11 +1,11 @@
 import { Types } from "mongoose";
 
 export interface ChangePasswordResponse {
-    data:    Data;
+    data:    ChangePasswordData;
     message: string;
 }
 
-export interface Data {
+export interface ChangePasswordData {
     _id:          Types.ObjectId;
     first_name:   string;
     last_name:    string;

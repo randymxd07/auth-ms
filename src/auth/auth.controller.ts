@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ChangePasswordDto, LoginUserDto, RegisterUserDto, VerifyUserDto } from './dto';
+import { ChangePasswordDto, LoginUserDto, RegisterUserDto, UpdateUserDto, VerifyUserDto } from './dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('')
@@ -30,6 +30,12 @@ export class AuthController {
   @MessagePattern('auth.change.password')
   changePassword(@Payload() changePasswordDto: ChangePasswordDto) {
     return this.authService.changePassword(changePasswordDto);
+  }
+
+  @HttpCode(200)
+  @MessagePattern('auth.update.user')
+  updateUser(@Payload() updateUserDto: UpdateUserDto) {
+    return this.authService.updateUser(updateUserDto);
   }
 
 }
