@@ -1,6 +1,7 @@
 export interface VerifyUserResponse {
     user:  User;
     token: string;
+    message: string;
 }
 
 interface User {

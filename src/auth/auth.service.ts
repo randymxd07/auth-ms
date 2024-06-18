@@ -143,7 +143,8 @@ export class AuthService {
 
             return {
                 user: data,
-                token: await this.signJWT(data)
+                token: await this.signJWT(data),
+                message: 'Successfully verified user'
             }
 
         } catch (error) {
@@ -163,15 +164,17 @@ export class AuthService {
 
         try {
 
-            /**====================================================================
-             * TODO: COMPARAR CONTRASEÑAS Y SI COINCIDEN CAMBIARLA POR LA NUEVA.
-             * TODO: RETORNAR UN MENSAJE AL CLIENTE.
-            =======================================================================*/
-
-            const { token, password } = changePasswordDto;
+            const { token, password, newPassword } = changePasswordDto;
             const decoded = this.jwtService.verify(token);
 
             const user = await this.usersRepository.findOne({ username: decoded.username });
+
+            if (!user) {
+                throw new RpcException({
+                    status: 400,
+                    message: 'User not valid'
+                })
+            }
 
             const isPasswordValid = bcrypt.compareSync(password, user.password);
 
@@ -182,7 +185,14 @@ export class AuthService {
                 })
             }
 
-            return user;
+            const updatePassword = await this.usersRepository.findOneAndUpdate(user._id, {
+                password: bcrypt.hashSync(newPassword, 10),
+            })
+
+            return {
+                data: updatePassword,
+                message: 'Password changed successfully'
+            };
 
         } catch (error) {
 
