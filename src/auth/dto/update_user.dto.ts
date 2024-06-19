@@ -32,9 +32,4 @@ export class UpdateUserDto extends PartialType(RegisterUserDto) {
     @IsNotEmpty()
     username: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @IsStrongPassword()
-    password: string;
-
 }

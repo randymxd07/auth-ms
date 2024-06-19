@@ -3,3 +3,4 @@ export * from './login_user_response.interface';
 export * from './register_user_response.interface';
 export * from './verify_user_response.interface';
 export * from './change_password_response.dto';
+export * from './update_user_response.interface';

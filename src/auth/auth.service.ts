@@ -1,7 +1,7 @@
 import { envs } from 'src/config';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { ChangePasswordResponse, JwtPayload, LoginUserResponse, RegisterUserResponse, VerifyUserResponse } from './interfaces';
+import { ChangePasswordResponse, JwtPayload, LoginUserResponse, RegisterUserResponse, UpdateUserResponse, VerifyUserResponse } from './interfaces';
 import { JwtService } from '@nestjs/jwt';
 import { ChangePasswordDto, LoginUserDto, RegisterUserDto, UpdateUserDto } from './dto';
 import { Model } from 'mongoose';
@@ -212,8 +212,29 @@ export class AuthService {
 
     }
 
-    updateUser(updateUserDto: UpdateUserDto) {
-        return updateUserDto;
+    /**=========================================
+     * UPDATE USER FUNCTION
+     * @param {UpdateUserDto} updateUserDto
+     * @returns {Promise<UpdateUserResponse>}
+    ============================================*/
+    async updateUser(updateUserDto: UpdateUserDto): Promise<UpdateUserResponse> {
+
+        const { id } = updateUserDto;
+
+        const user = await this.usersRepository.findOneAndUpdate({_id: id}, updateUserDto);
+
+        if(!user) {
+            throw new RpcException({
+                status: 400,
+                message: "User's information could not be updated"
+            })
+        }
+
+        return {
+            data: updateUserDto,
+            message: 'User information updated correctly'
+        }
+
     }
 
 }
