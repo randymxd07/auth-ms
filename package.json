@@ -27,7 +27,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^10.3.10",
     "@nestjs/mongoose": "^10.0.10",
-    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/platform-express": "^10.3.10",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
