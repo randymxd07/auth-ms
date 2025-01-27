@@ -26,7 +26,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^10.4.15",
-    "@nestjs/mongoose": "^10.1.0",
+    "@nestjs/mongoose": "^11.0.0",
     "@nestjs/platform-express": "^10.4.15",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
