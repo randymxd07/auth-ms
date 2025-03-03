@@ -36,7 +36,7 @@
     "joi": "^17.13.3",
     "mongoose": "^8.11.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.5",
